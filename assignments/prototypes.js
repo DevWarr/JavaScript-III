@@ -37,8 +37,11 @@ function CharacterStats(attr) {
   this.healthPoints = attr.healthPoints;
 }
 CharacterStats.prototype = Object.create(GameObject.prototype);
-CharacterStats.prototype.takeDamage = function() {
-  return `${this.name} took damage.`
+CharacterStats.prototype.takeDamage = function(attack) {
+  if(attack) {
+    this.healthpoints -= attack;
+    return this.healthpoints > 0 ? `${this.name} took damage. They now have ${this.healthpoints} HP.`: `${this.name} has died.`;
+  } else return `${this.name} took damage.`;
 }
 
 /*
@@ -138,3 +141,10 @@ Humanoid.prototype.greet = function() {
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villan(attr) {
+    Humanoid.call(this, attr);
+    this.attack = attr.attack;
+    this.weapon = attr.weapons[0];
+  }
+  Villan.prototype = Object.create(Humanoid.prototype);
